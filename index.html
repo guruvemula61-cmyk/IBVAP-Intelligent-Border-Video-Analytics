@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071426">
+<title>IBVAP | Intelligent Video Analytics</title>
+<style>
+:root {
+  --bg:#071426;
+  --panel:#10233b;
+  --blue:#38bdf8;
+  --text:#f1f5f9;
+  --muted:#a8b7ca;
+}
+* {margin:0;padding:0;box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+nav {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 8%;border-bottom:1px solid #203650;
+  position:sticky;top:0;background:#071426ee;
+  backdrop-filter:blur(12px);z-index:10;
+}
+.logo {font-size:21px;font-weight:800;color:var(--blue)}
+nav a {color:var(--muted);text-decoration:none;margin-left:22px;font-size:14px}
+nav a:hover {color:var(--blue)}
+.hero {
+  min-height:590px;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;
+  padding:90px 8%;
+  background:radial-gradient(ellipse at top,#12365a 0%,#071426 65%);
+}
+.tag {
+  border:1px solid #2878a8;color:var(--blue);
+  padding:7px 16px;border-radius:30px;font-size:12px;
+  letter-spacing:2px;margin-bottom:25px;
+}
+h1 {font-size:clamp(38px,7vw,72px);line-height:1.12;max-width:950px}
+h1 span {color:var(--blue)}
+.hero p {max-width:720px;color:var(--muted);margin:25px auto;font-size:17px}
+.buttons {display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
+.btn {
+  padding:13px 23px;border-radius:8px;text-decoration:none;
+  font-weight:bold;transition:.2s;
+}
+.primary {background:var(--blue);color:#061426}
+.secondary {border:1px solid #46617d;color:white}
+.btn:hover {transform:translateY(-3px)}
+section {padding:75px 8%}
+.section-title {text-align:center;margin-bottom:42px}
+.section-title h2 {font-size:32px}
+.section-title p {color:var(--muted);margin-top:8px}
+.grid {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.card {
+  background:var(--panel);border:1px solid #203b59;
+  border-radius:14px;padding:25px;transition:.25s;
+}
+.card:hover {transform:translateY(-5px);border-color:var(--blue)}
+.card .icon {font-size:30px;margin-bottom:15px}
+.card h3 {margin-bottom:10px;color:#e6f5ff}
+.card p {color:var(--muted);font-size:14px}
+.about {
+  max-width:900px;margin:auto;text-align:center;
+  color:var(--muted);font-size:16px;
+}
+.workflow {
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:12px;align-items:center;
+}
+.step {
+  background:var(--panel);border:1px solid #31516f;
+  padding:17px 20px;border-radius:10px;text-align:center;
+  color:#dff5ff;font-weight:bold;
+}
+.arrow {color:var(--blue);font-size:22px}
+.tech {
+  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+}
+.tech span {
+  padding:10px 17px;background:#132b46;
+  border:1px solid #294b6b;border-radius:25px;
+  color:#bfeaff;font-size:14px;
+}
+.notice {
+  max-width:850px;margin:auto;padding:22px;
+  border-left:4px solid var(--blue);
+  background:#10233b;border-radius:8px;color:var(--muted);
+}
+footer {
+  text-align:center;padding:30px 8%;
+  border-top:1px solid #203650;color:var(--muted);
+  font-size:13px;
+}
+footer strong {color:var(--blue)}
+@media(max-width:650px) {
+  nav {padding:16px 5%}
+  nav .links {display:none}
+  section {padding:55px 6%}
+  .hero {min-height:530px;padding:70px 6%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">IBVAP.</div>
+  <div class="links">
+    <a href="#about">About</a>
+    <a href="#features">Features</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#technology">Technology</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="tag">TEAM CODE AURAS · SRGEC</div>
+  <h1>Intelligent Border <span>Video Analytics</span> Platform</h1>
+  <p>
+    An AI-powered video analytics prototype exploring automated
+    person detection, video processing and digital evidence integrity.
+  </p>
+  <div class="buttons">
+    <a class="btn primary" href="#about">Explore Project ↓</a>
+    <a class="btn secondary"
+       href="https://github.com/guruVemula61-cmyk/IBVAP-Intelligent-Border-Video-Analytics"
+       target="_blank" rel="noopener">View on GitHub ↗</a>
+  </div>
+</header>
+
+<section id="about">
+  <div class="section-title">
+    <h2>About the Project</h2>
+    <p>Technology-driven video analytics prototype</p>
+  </div>
+  <p class="about">
+    IBVAP stands for Intelligent Border Video Analytics Platform.
+    The project explores the use of computer vision and AI techniques
+    to process video footage, detect people and identify events within
+    a sample monitoring region. It also explores cryptographic hashing
+    for checking the integrity of generated evidence files.
+  </p>
+</section>
+
+<section id="features">
+  <div class="section-title">
+    <h2>Core Features</h2>
+    <p>Key capabilities explored in our prototype</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h3>AI Person Detection</h3>
+      <p>Uses a pretrained YOLO model to identify people in uploaded video footage.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🎥</div>
+      <h3>Video Processing</h3>
+      <p>Uses OpenCV to process video frames and generate annotated output.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📍</div>
+      <h3>Sample Zone Monitoring</h3>
+      <p>Demonstrates a configurable rectangular sample region and event alerts.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔐</div>
+      <h3>Evidence Integrity</h3>
+      <p>Uses SHA-256 hashing to calculate file fingerprints for integrity checks.</p>
+    </div>
+  </div>
+</section>
+
+<section id="workflow">
+  <div class="section-title">
+    <h2>Project Workflow</h2>
+    <p>A simplified view of the prototype pipeline</p>
+  </div>
+  <div class="workflow">
+    <div class="step">Video Input</div>
+    <div class="arrow">→</div>
+    <div class="step">Frame Processing</div>
+    <div class="arrow">→</div>
+    <div class="step">AI Detection</div>
+    <div class="arrow">→</div>
+    <div class="step">Event Report</div>
+    <div class="arrow">→</div>
+    <div class="step">SHA-256 Hash</div>
+  </div>
+</section>
+
+<section id="technology">
+  <div class="section-title">
+    <h2>Technology Stack</h2>
+    <p>Tools and technologies used in the prototype</p>
+  </div>
+  <div class="tech">
+    <span>Python</span>
+    <span>YOLO</span>
+    <span>OpenCV</span>
+    <span>Streamlit</span>
+    <span>PyTorch</span>
+    <span>SHA-256</span>
+    <span>HTML</span>
+    <span>CSS</span>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">
+    <h2>Project Scope & Limitations</h2>
+  </div>
+  <div class="notice">
+    This website presents the project overview. The current prototype
+    uses pretrained YOLO person detection, OpenCV video processing,
+    a sample rectangular monitoring region and local SHA-256 hashing.
+    Advanced RGB-thermal fusion, custom model training, digital
+    signatures and blockchain integration are not represented as
+    completed features in this version.
+  </div>
+</section>
+
+<footer>
+  <p><strong>IBVAP</strong> | Team CODE AURAS</p>
+  <p>Seshadri Rao Gudlavalleru Engineering College · India</p>
+  <p>Academic Prototype · 2026</p>
+</footer>
+
+</body>
+</html>
