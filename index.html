@@ -2,159 +2,714 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#050505">
-<title>IBVAP | Intelligent Border Video Analytics Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBVAP | Command Center</title>
+
 <style>
-:root{--bg:#050505;--bar:#0c0c0c;--line:#262626;--lime:#c6e03a;--green:#2bff4a;--amber:#ffb11f;--cyan:#1ea7ff;--red:#ff2a12;--text:#e8e8e8;--muted:#8d8d8d}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:"Courier New",Consolas,monospace;line-height:1.65}
-.hud{position:sticky;top:0;z-index:20;background:var(--bar);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;gap:10px;padding:9px 4%;font-size:13px;font-weight:700;letter-spacing:1px}
-.hud .cam{color:var(--lime)}.hud .t{color:#fff;text-align:center}.hud .int{text-align:right;color:var(--green)}
-.hud .int.bad{color:var(--red)}
-.alert{background:var(--red);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;padding:5px 4%;position:sticky;top:37px;z-index:19;display:none}
-.alert.on{display:block;animation:blink 1s steps(2) infinite}
-@keyframes blink{50%{background:#b01a08}}
-nav{display:flex;justify-content:center;gap:26px;padding:12px 4%;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:2px;flex-wrap:wrap}
-nav a{color:var(--muted);text-decoration:none}nav a:hover{color:var(--amber)}
-.scene{position:relative;height:min(78vh,640px);min-height:460px;overflow:hidden;background:linear-gradient(180deg,#3b3b3b 0%,#8a8a8a 38%,#cfcfcf 100%)}
-.scene::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 15% 70%,#000 0 14%,transparent 15%),repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
-.scene::after{content:"";position:absolute;left:0;right:0;height:90px;top:-90px;background:linear-gradient(180deg,transparent,rgba(198,224,58,.14),transparent);animation:scan 5s linear infinite}
-@keyframes scan{to{top:100%}}
-.zone{position:absolute;left:26%;top:58%;width:46%;height:34%;background:rgba(255,100,60,.28);border:2px solid var(--amber);clip-path:polygon(8% 0,100% 8%,92% 100%,0 92%);transition:.3s}
-.zone.hot{background:rgba(255,42,18,.38);border-color:var(--red)}
-.zlabel{position:absolute;left:26%;top:54%;color:var(--amber);font-size:12px;font-weight:700;letter-spacing:1px;transition:.3s}
-.zlabel.hot{color:var(--red)}
-.box{position:absolute;width:62px;height:150px;border:2px solid var(--cyan);top:34%;left:92%;transition:border-color .2s}
-.box span{position:absolute;left:-2px;top:-19px;background:var(--cyan);color:#001a2e;font-size:11px;font-weight:700;padding:1px 6px;white-space:nowrap}
-.box.hot{border-color:var(--red)}.box.hot span{background:var(--red);color:#fff}
-.title{position:absolute;left:4%;top:9%;max-width:560px;z-index:3;text-shadow:0 2px 18px #000}
-.title small{color:var(--lime);letter-spacing:3px;font-size:12px}
-.title h1{font-size:clamp(32px,6vw,62px);line-height:1.1;margin:8px 0 14px;color:#fff;background:rgba(0,0,0,.55);padding:6px 12px;display:inline-block}
-.title h1 b{color:var(--amber)}
-.title p{background:rgba(0,0,0,.65);padding:10px 12px;font-size:14px;color:#ddd}
-.btns{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
-.btn{padding:11px 20px;font-weight:700;font-size:13px;letter-spacing:1px;text-decoration:none;border:1px solid var(--amber);color:var(--amber);background:rgba(0,0,0,.7);transition:.2s}
-.btn:hover,.btn.p{background:var(--amber);color:#000}
-section{padding:70px 5%;max-width:1150px;margin:auto}
-h2{font-size:22px;letter-spacing:3px;color:var(--amber);margin-bottom:6px}
-h2::before{content:"// ";color:var(--lime)}
-.sub{color:var(--muted);font-size:13px;margin-bottom:30px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.card{background:var(--bar);border:1px solid var(--line);border-left:3px solid var(--cyan);padding:20px;transition:.2s}
-.card:hover{border-left-color:var(--amber);transform:translateY(-4px)}
-.card h3{font-size:14px;color:#fff;letter-spacing:1px;margin-bottom:8px}
-.card h3 i{color:var(--lime);font-style:normal;margin-right:8px}
-.card p{font-size:13px;color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:26px}
-.stat{border:1px solid var(--line);padding:16px;text-align:center;background:var(--bar)}
-.stat b{display:block;font-size:26px;color:var(--green)}.stat span{font-size:11px;color:var(--muted);letter-spacing:2px}
-.demo{border:1px solid var(--line);background:#000}
-.demo video{width:100%;display:block;max-height:560px}
-.demo .bar{display:flex;justify-content:space-between;padding:8px 14px;font-size:12px;color:var(--lime);border-bottom:1px solid var(--line)}
-.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.flow div{border:1px solid var(--cyan);color:#cfeaff;padding:12px 16px;font-size:13px;font-weight:700}
-.flow em{color:var(--amber);font-style:normal}
-.tech{display:flex;flex-wrap:wrap;gap:10px}
-.tech span{border:1px solid var(--line);padding:8px 14px;font-size:13px;color:var(--lime);background:var(--bar)}
-.note{border:1px solid var(--amber);border-left-width:4px;padding:18px;background:var(--bar);color:var(--muted);font-size:13px}
-footer{border-top:1px solid var(--line);text-align:center;padding:28px 5%;font-size:12px;color:var(--muted);line-height:2}
-footer b{color:var(--lime)}
-@media(max-width:640px){.hud{font-size:11px;grid-template-columns:1fr 1fr}.hud .t{display:none}.alert{top:33px;font-size:10px}.box{width:44px;height:110px}.title{top:6%}}
+:root {
+  --green: #087f60;
+  --light: #edf5f1;
+  --ink: #19382f;
+  --muted: #71877f;
+  --red: #d84e4e;
+  --line: #d8e7e0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--light);
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+}
+
+.topbar {
+  background: white;
+  padding: 18px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mark {
+  background: var(--green);
+  color: white;
+  padding: 12px;
+  border-radius: 9px;
+  font-weight: bold;
+}
+
+.brand h2 {
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.brand small {
+  color: var(--muted);
+}
+
+.online {
+  color: var(--green);
+  font-weight: bold;
+}
+
+.hero {
+  padding: 25px 30px 15px;
+}
+
+.hero h1 {
+  margin-bottom: 5px;
+}
+
+.hero p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+main {
+  padding: 20px 30px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.card, .metric {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 17px;
+  box-shadow: 0 3px 10px #17352d08;
+}
+
+.metric small {
+  color: var(--muted);
+}
+
+.metric strong {
+  display: block;
+  font-size: 25px;
+  margin: 10px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 15px;
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 15px;
+}
+
+.camera {
+  height: 330px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(
+    to bottom,
+    #91a9b4 0%,
+    #c8d3d0 42%,
+    #66756e 43%,
+    #26332f 100%
+  );
+}
+
+.camera.danger {
+  animation: dangerFlash 0.7s infinite alternate;
+}
+
+@keyframes dangerFlash {
+  from { box-shadow: inset 0 0 0 0 #ff0000; }
+  to { box-shadow: inset 0 0 0 8px #ff2525; }
+}
+
+.road {
+  position: absolute;
+  bottom: 18%;
+  width: 100%;
+  border-top: 2px dashed white;
+}
+
+.fence {
+  position: absolute;
+  right: 8%;
+  top: 25%;
+  width: 32%;
+  height: 60%;
+  border: 2px dashed #ffc04d;
+  background: #ffc04d18;
+}
+
+.fence span {
+  position: absolute;
+  top: -22px;
+  color: white;
+  background: #5a421d;
+  padding: 4px 7px;
+  font-size: 10px;
+}
+
+.person {
+  position: absolute;
+  left: 18%;
+  bottom: 17%;
+  width: 30px;
+  height: 95px;
+  z-index: 3;
+}
+
+.head {
+  width: 18px;
+  height: 18px;
+  background: #283b37;
+  border-radius: 50%;
+  margin: auto;
+  border: 2px solid white;
+}
+
+.bodyperson {
+  width: 22px;
+  height: 35px;
+  background: #1a6e64;
+  border-radius: 5px;
+  margin: 3px auto;
+}
+
+.legs {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.legs i {
+  width: 7px;
+  height: 31px;
+  background: #172722;
+  border-radius: 5px;
+  transform-origin: top;
+  animation: walk .4s infinite alternate;
+}
+
+.legs i:last-child {
+  animation-direction: alternate-reverse;
+}
+
+@keyframes walk {
+  to { transform: rotate(18deg); }
+}
+
+.person.alert .bodyperson {
+  background: red;
+}
+
+.person.alert .head {
+  background: #b52c2c;
+}
+
+.tag {
+  position: absolute;
+  top: -20px;
+  left: -15px;
+  background: #078bba;
+  color: white;
+  padding: 4px 6px;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.person.alert .tag {
+  background: red;
+}
+
+.car {
+  position: absolute;
+  right: 11%;
+  bottom: 12%;
+  width: 145px;
+  height: 65px;
+  z-index: 2;
+}
+
+.car-body {
+  position: absolute;
+  bottom: 8px;
+  width: 145px;
+  height: 34px;
+  border-radius: 20px 25px 8px 8px;
+  background: linear-gradient(#e8eff1, #71828a);
+  border: 2px solid white;
+}
+
+.car-roof {
+  position: absolute;
+  bottom: 37px;
+  left: 30px;
+  width: 85px;
+  height: 30px;
+  border-radius: 35px 35px 0 0;
+  background: #23475b;
+  border: 2px solid white;
+}
+
+.wheel {
+  position: absolute;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+  background: #111;
+  border: 4px solid #9da9aa;
+  border-radius: 50%;
+}
+
+.wheel.one { left: 20px; }
+.wheel.two { right: 20px; }
+
+.beacon {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #16b981;
+  box-shadow: 0 0 15px #16b981;
+}
+
+.camera.danger .beacon {
+  background: red;
+  box-shadow: 0 0 25px red;
+  animation: flash .4s infinite alternate;
+}
+
+@keyframes flash {
+  from { opacity: 1; }
+  to { opacity: .15; }
+}
+
+.camlabel {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 15px;
+}
+
+button {
+  border: 0;
+  padding: 10px 15px;
+  border-radius: 6px;
+  background: var(--green);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button.secondary {
+  background: #e7f2ec;
+  color: var(--green);
+}
+
+button.danger {
+  background: var(--red);
+}
+
+.event {
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  margin-bottom: 10px;
+  background: #fbfdfc;
+  font-size: 12px;
+}
+
+.event small {
+  display: block;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.lower {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 16px;
+}
+
+.node {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.node span {
+  float: right;
+  color: var(--green);
+  font-weight: bold;
+}
+
+.status {
+  color: var(--green);
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 20px;
+}
+
+@media(max-width:850px) {
+  .metrics { grid-template-columns: repeat(2,1fr); }
+  .grid, .lower { grid-template-columns: 1fr; }
+}
+
+@media(max-width:550px) {
+  main { padding: 15px; }
+  .topbar { padding: 15px; }
+  .hero { padding: 20px 15px; }
+  .camera { height: 250px; }
+  .metrics { gap: 8px; }
+  .metric { padding: 12px; }
+}
 </style>
 </head>
+
 <body>
 
-<div class="hud"><div class="cam">CAM: CAM-001</div><div class="t" id="t">T: 00:00.000</div><div class="int" id="int">INTRUSIONS: 0</div></div>
-<div class="alert" id="alert"></div>
-
-<nav><a href="#top">HOME</a><a href="#about">ABOUT</a><a href="#features">FEATURES</a><a href="#demo">LIVE DEMO</a><a href="#workflow">WORKFLOW</a><a href="#tech">TECH</a></nav>
-
-<div class="scene" id="top">
-  <div class="title">
-    <small>TEAM CODE AURAS · SRGEC</small>
-    <h1>INTELLIGENT BORDER <b>VIDEO ANALYTICS</b> PLATFORM</h1>
-    <p>AI person detection, restricted-zone monitoring and SHA-256 evidence integrity for border surveillance footage.</p>
-    <div class="btns">
-      <a class="btn p" href="#demo">▶ WATCH DEMO</a>
-      <a class="btn" href="https://github.com/guruVemula61-cmyk/IBVAP-Intelligent-Border-Video-Analytics" target="_blank" rel="noopener">GITHUB ↗</a>
+<div class="topbar">
+  <div class="brand">
+    <div class="mark">IB</div>
+    <div>
+      <h2>IBVAP</h2>
+      <small>INTELLIGENT BORDER VIDEO ANALYTICS</small>
     </div>
   </div>
-  <div class="zlabel" id="zl">RESTRICTED BORDER ZONE: ZONE-ALPHA-BORDER</div>
-  <div class="zone" id="zone"></div>
-  <div class="box" id="box"><span id="bl">Person #1</span></div>
+  <div class="online">● SYSTEM ONLINE</div>
 </div>
 
-<section id="about">
-  <h2>ABOUT</h2><p class="sub">Mission overview</p>
-  <p style="color:#bbb;max-width:820px">IBVAP is an AI-powered video analytics prototype. It processes surveillance footage, detects people with a pretrained YOLO model, flags intrusions inside a defined restricted zone and creates SHA-256 fingerprints so output evidence can be checked for tampering.</p>
-  <div class="stats">
-    <div class="stat"><b>YOLO</b><span>PERSON DETECTION</span></div>
-    <div class="stat"><b>OpenCV</b><span>VIDEO PROCESSING</span></div>
-    <div class="stat"><b>ZONE</b><span>INTRUSION ALERTS</span></div>
-    <div class="stat"><b>SHA-256</b><span>EVIDENCE HASH</span></div>
-  </div>
-</section>
+<div class="hero">
+  <h1>Security Command Center</h1>
+  <p>Intelligent perimeter monitoring and security event management</p>
+</div>
 
-<section id="features">
-  <h2>FEATURES</h2><p class="sub">Capabilities in this prototype</p>
+<main>
+
+  <div class="metrics">
+    <div class="metric">
+      <small>CAMERAS ONLINE</small>
+      <strong>04</strong>
+      <small>All demo nodes connected</small>
+    </div>
+
+    <div class="metric">
+      <small>ACTIVE ALERTS</small>
+      <strong id="eventMetric">00</strong>
+      <small>Security events</small>
+    </div>
+
+    <div class="metric">
+      <small>PERIMETER STATUS</small>
+      <strong id="zoneMetric" style="color:green">SAFE</strong>
+      <small id="zoneSub">No active boundary alert</small>
+    </div>
+
+    <div class="metric">
+      <small>NETWORK STATUS</small>
+      <strong style="color:green">ONLINE</strong>
+      <small>Demo network available</small>
+    </div>
+  </div>
+
   <div class="grid">
-    <div class="card"><h3><i>01</i>PERSON DETECTION</h3><p>Pretrained YOLO finds people in thermal and normal video and draws labelled boxes.</p></div>
-    <div class="card"><h3><i>02</i>RESTRICTED ZONE</h3><p>A configurable zone is overlaid on the frame; people entering it become intruders.</p></div>
-    <div class="card"><h3><i>03</i>LIVE ALERT BANNER</h3><p>Red perimeter-breach banner and intrusion counter update as events occur.</p></div>
-    <div class="card"><h3><i>04</i>EVIDENCE INTEGRITY</h3><p>SHA-256 hash of the output file lets anyone verify it was not modified.</p></div>
+
+    <div class="card">
+      <h3>Live Perimeter Surveillance</h3>
+
+      <div class="camera" id="camera">
+
+        <div class="camlabel">CAM-001 · NORTH GATE</div>
+        <div class="beacon"></div>
+        <div class="road"></div>
+
+        <div class="fence">
+          <span>RESTRICTED ZONE</span>
+        </div>
+
+        <div class="person" id="person">
+          <div class="tag" id="personTag">PERSON #01</div>
+          <div class="head"></div>
+          <div class="bodyperson"></div>
+          <div class="legs">
+            <i></i><i></i>
+          </div>
+        </div>
+
+        <div class="car">
+          <div class="car-roof"></div>
+          <div class="car-body"></div>
+          <div class="wheel one"></div>
+          <div class="wheel two"></div>
+        </div>
+
+      </div>
+
+      <div class="controls">
+        <button id="restart">↻ Restart Demo</button>
+        <button class="secondary" id="pause">Ⅱ Pause</button>
+        <button class="danger" id="trigger">⚠ Test Alert</button>
+        <button class="secondary" id="soundToggle">♫ Enable Alert Sound</button>
+      </div>
+
+      <p style="font-size:10px;color:#71877f">
+        Enable sound using the sound button. The person movement and alert are simulated.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Recent Security Events</h3>
+
+      <div class="event">
+        <b>Perimeter scan completed</b>
+        <small>CAM-001 · Normal status</small>
+      </div>
+
+      <div class="event">
+        <b>Evidence record verified</b>
+        <small>Evidence vault · Verified</small>
+      </div>
+
+      <div class="event" id="alertEvent">
+        <b>Monitoring system active</b>
+        <small>Waiting for security events</small>
+      </div>
+
+      <div class="event">
+        <b>System demonstration</b>
+        <small>Local simulation · No external camera connected</small>
+      </div>
+    </div>
+
   </div>
-</section>
 
-<section id="demo">
-  <h2>LIVE DEMO</h2><p class="sub">Annotated output from the prototype</p>
-  <div class="demo">
-    <div class="bar"><span>CAM-001 · THERMAL FEED</span><span>● REC</span></div>
-    <video controls muted loop playsinline preload="metadata" src="project_2_video.mp4"></video>
+  <div class="lower">
+
+    <div class="card">
+      <h3>Camera Network</h3>
+      <div class="node">CAM-001 · North Gate <span>ONLINE</span></div>
+      <div class="node">CAM-002 · East Boundary <span>ONLINE</span></div>
+      <div class="node">CAM-003 · West Checkpoint <span>ONLINE</span></div>
+      <div class="node">CAM-004 · South Entry <span>ONLINE</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Node Health</h3>
+      <div class="node">Border Police Node <span>HEALTHY</span></div>
+      <div class="node">State Police Node <span>HEALTHY</span></div>
+      <div class="node">Judiciary Node <span>HEALTHY</span></div>
+    </div>
+
+    <div class="card">
+      <h3>System Integrity</h3>
+      <div class="node">Evidence Hash Check <span>PASS</span></div>
+      <div class="node">Access Audit <span>LOGGED</span></div>
+      <div class="node">Ledger Sync <span>SYNCED</span></div>
+    </div>
+
   </div>
-</section>
 
-<section id="workflow">
-  <h2>WORKFLOW</h2><p class="sub">Prototype pipeline</p>
-  <div class="flow"><div>VIDEO INPUT</div><em>▶</em><div>FRAME PROCESSING</div><em>▶</em><div>YOLO DETECTION</div><em>▶</em><div>ZONE CHECK + ALERT</div><em>▶</em><div>SHA-256 HASH</div></div>
-</section>
+</main>
 
-<section id="tech">
-  <h2>TECH STACK</h2><p class="sub">Tools used</p>
-  <div class="tech"><span>Python</span><span>YOLO</span><span>OpenCV</span><span>PyTorch</span><span>Streamlit</span><span>SHA-256</span><span>HTML / CSS</span></div>
-</section>
-
-<section>
-  <h2>SCOPE</h2><p class="sub">Limitations</p>
-  <div class="note">This site presents the project overview. The prototype uses pretrained YOLO person detection, OpenCV processing, a sample rectangular zone and local SHA-256 hashing. RGB-thermal fusion, custom model training, digital signatures and blockchain are not claimed as completed features.</div>
-</section>
-
-<footer><b>IBVAP</b> | TEAM CODE AURAS<br>Seshadri Rao Gudlavalleru Engineering College · India<br>Academic Prototype · 2026</footer>
+<footer>
+  IBVAP · Intelligent Border Video Analytics Platform
+  <br><br>
+  Academic prototype · Demonstration simulation
+</footer>
 
 <script>
-(function(){
-  var t=document.getElementById('t'),it=document.getElementById('int'),al=document.getElementById('alert'),
-      box=document.getElementById('box'),bl=document.getElementById('bl'),zone=document.getElementById('zone'),zl=document.getElementById('zl');
-  var start=performance.now();
-  function tick(){
-    var s=((performance.now()-start)/1000)%14;
-    var n=s>=13.4?3:s>=11?2:s>=9.8?1:0;
-    t.textContent='T: 00:'+s.toFixed(3).padStart(6,'0');
-    it.textContent='INTRUSIONS: '+n;
-    it.className='int'+(n?' bad':'');
-    if(n){al.className='alert on';al.textContent='[ALERT] PERIMETER BREACH ACTIVE : '+n+' INTRUDER(S) IN RESTRICTED ZONE'}else{al.className='alert'}
-    var x=93-s*3.6;
-    box.style.left=x+'%';
-    var inZone=n>0;
-    box.className='box'+(inZone?' hot':'');
-    zone.className='zone'+(inZone?' hot':'');
-    zl.className='zlabel'+(inZone?' hot':'');
-    bl.textContent=inZone?'INTRUDER #'+(n+2)+' (DWELL: '+Math.round((s-9.8)*5+14)+'f)':'Person #'+(s>8?3:1);
-    requestAnimationFrame(tick);
+const person = document.getElementById("person");
+const camera = document.getElementById("camera");
+const zoneMetric = document.getElementById("zoneMetric");
+const zoneSub = document.getElementById("zoneSub");
+const eventMetric = document.getElementById("eventMetric");
+const personTag = document.getElementById("personTag");
+const alertEvent = document.getElementById("alertEvent");
+
+let position = 18;
+let animationFrame;
+let paused = false;
+let alerted = false;
+let soundEnabled = false;
+let audioContext = null;
+
+function movePerson() {
+  person.style.left = position + "%";
+}
+
+function beep() {
+  if (!soundEnabled) return;
+
+  try {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = 880;
+
+    gain.gain.setValueAtTime(0.001, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.15, audioContext.currentTime + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.32);
+
+  } catch (error) {
+    console.log("Audio unavailable");
   }
-  tick();
-})();
+}
+
+function triggerAlert() {
+  if (alerted) return;
+
+  alerted = true;
+  paused = true;
+
+  person.classList.add("alert");
+  camera.classList.add("danger");
+
+  personTag.textContent = "PERSON DETECTED";
+
+  zoneMetric.textContent = "ALERT";
+  zoneMetric.style.color = "red";
+  zoneSub.textContent = "Person reached restricted zone";
+
+  eventMetric.textContent = "01";
+
+  alertEvent.innerHTML =
+    "<b>⚠ Restricted zone alert detected</b>" +
+    "<small>CAM-001 · Immediate attention required</small>";
+
+  beep();
+}
+
+function animate() {
+  if (paused) return;
+
+  position += 0.055;
+
+  if (position >= 57) {
+    position = 57;
+    movePerson();
+    triggerAlert();
+    return;
+  }
+
+  movePerson();
+  animationFrame = requestAnimationFrame(animate);
+}
+
+function startDemo() {
+  cancelAnimationFrame(animationFrame);
+
+  position = 18;
+  paused = false;
+  alerted = false;
+
+  person.classList.remove("alert");
+  camera.classList.remove("danger");
+
+  personTag.textContent = "PERSON #01";
+
+  zoneMetric.textContent = "SAFE";
+  zoneMetric.style.color = "green";
+  zoneSub.textContent = "No active boundary alert";
+
+  eventMetric.textContent = "00";
+
+  alertEvent.innerHTML =
+    "<b>Monitoring system active</b>" +
+    "<small>Waiting for security events</small>";
+
+  movePerson();
+
+  document.getElementById("pause").textContent = "Ⅱ Pause";
+
+  animationFrame = requestAnimationFrame(animate);
+}
+
+document.getElementById("restart").onclick = startDemo;
+
+document.getElementById("pause").onclick = function() {
+  if (alerted) return;
+
+  paused = !paused;
+
+  this.textContent = paused ? "▶ Resume" : "Ⅱ Pause";
+
+  if (!paused) {
+    animationFrame = requestAnimationFrame(animate);
+  }
+};
+
+document.getElementById("trigger").onclick = triggerAlert;
+
+document.getElementById("soundToggle").onclick = async function() {
+  try {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    await audioContext.resume();
+
+    soundEnabled = !soundEnabled;
+
+    this.textContent = soundEnabled
+      ? "♫ Alert Sound ON"
+      : "♫ Enable Alert Sound";
+
+  } catch (error) {
+    alert("Audio is unavailable in this browser.");
+  }
+};
+
+startDemo();
 </script>
+
 </body>
 </html>
